@@ -8,7 +8,7 @@ const links = ref({
       name: 'Home',
       on: true,
       active: false,
-      path: '/'
+      path: '/home'
     }
   ],
   Config: [
@@ -23,14 +23,13 @@ const links = ref({
           icon: 'icon-code',
           name: '123',
           on: false,
-
-          path: '/65f9088d52859f6e463ffcb5'
+          path: '/keyId/65f9088d52859f6e463ffcb5'
         },
         {
           icon: 'icon-code',
           name: '123',
           on: false,
-          path: '/65f9088d52859f6e463ffcb5'
+          path: '/keyId/65f9088d52859f6e463ffcb51'
         }
       ]
     },
@@ -45,7 +44,7 @@ const links = ref({
           icon: 'icon-code',
           name: 'Policy',
           on: false,
-          path: '/65f8fd0d47440a640ed94841'
+          path: '/policyId/65f8fd0d47440a640ed94841'
         }
       ]
     }
@@ -75,17 +74,6 @@ const openLink = (time, section) => {
       }
     })
   })
-
-  section.forEach((items) => {
-    items.active = false
-    items.on = false
-  })
-  if (time.links) {
-    time.links.forEach((items) => {
-      items.on = false
-    })
-  }
-
   time.active = true
   time.on = true
   time.links[0].on = true

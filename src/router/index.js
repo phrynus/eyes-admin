@@ -7,15 +7,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'index',
-      component: IndexView,
+      // component: IndexView,
       children: [
         {
-          path: '/65f9088d52859f6e463ffcb5',
+          path: '/home',
+          name: 'home',
+          component: IndexView
+        },
+        {
+          path: '/keyId/:id',
           name: 'keyId',
           component: () => import('@/views/key/index.vue')
         },
         {
-          path: '/65f8fd0d47440a640ed94841',
+          path: '/policyId/:id',
           name: 'policyId',
           component: () => import('@/views/policy/index.vue')
         }
