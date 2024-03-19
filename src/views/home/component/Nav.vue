@@ -45,7 +45,6 @@ const links = ref({
           icon: 'icon-code',
           name: 'Policy',
           on: false,
-
           path: '/65f8fd0d47440a640ed94841'
         }
       ]
@@ -63,13 +62,30 @@ const links = ref({
   ]
 })
 const openLink = (time, section) => {
+  // 遍历links对象把对象里面的数组，将active和on都设置为false
+  Object.keys(links.value).forEach((sectionName) => {
+    links.value[sectionName].forEach((item) => {
+      item.active = false
+      item.on = false
+      if (item.links) {
+        item.links.forEach((subItem) => {
+          subItem.active = false
+          subItem.on = false
+        })
+      }
+    })
+  })
+
   section.forEach((items) => {
     items.active = false
     items.on = false
-    items.links.forEach((items) => {
+  })
+  if (time.links) {
+    time.links.forEach((items) => {
       items.on = false
     })
-  })
+  }
+
   time.active = true
   time.on = true
   time.links[0].on = true
@@ -88,6 +104,7 @@ const openLinSub = (time, list) => {
       <span>{{ sectionName }}</span>
       <div class="link" v-for="(time, index) in section">
         <RouterLink
+          :class="time.on ? 'on' : null"
           :to="time.path === '' ? time.links[0].path : time.path"
           @click="openLink(time, section)"
         >
