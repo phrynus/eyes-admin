@@ -14,9 +14,6 @@ import Nav from './component/Nav.vue'
       <RouterView />
     </div>
   </div>
-  <!--<RouterLink to="/key">Key</RouterLink>-->
-  <!--/-->
-  <!--<RouterLink to="/policy">Policy</RouterLink>-->
 </template>
 
 <style scoped>

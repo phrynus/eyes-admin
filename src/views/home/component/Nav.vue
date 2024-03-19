@@ -15,33 +15,38 @@ const links = ref({
     {
       icon: 'icon-code',
       name: 'Key',
-      path: '/key',
+      path: '',
       on: false,
       active: false,
       links: [
         {
           icon: 'icon-code',
-          name: 'Key',
-          path: '/key'
+          name: '123',
+          on: false,
+
+          path: '/65f9088d52859f6e463ffcb5'
         },
         {
           icon: 'icon-code',
-          name: 'Key',
-          path: '/key'
+          name: '123',
+          on: false,
+          path: '/65f9088d52859f6e463ffcb5'
         }
       ]
     },
     {
       icon: 'icon-code',
       name: 'Policy',
-      path: '/policy',
+      path: '',
       on: false,
       active: false,
       links: [
         {
           icon: 'icon-code',
           name: 'Policy',
-          path: '/policy'
+          on: false,
+
+          path: '/65f8fd0d47440a640ed94841'
         }
       ]
     }
@@ -57,8 +62,23 @@ const links = ref({
     }
   ]
 })
-const openLink = () => {
-  console.log('openLink')
+const openLink = (time, section) => {
+  section.forEach((items) => {
+    items.active = false
+    items.on = false
+    items.links.forEach((items) => {
+      items.on = false
+    })
+  })
+  time.active = true
+  time.on = true
+  time.links[0].on = true
+}
+const openLinSub = (time, list) => {
+  list.forEach((item) => {
+    item.on = false
+  })
+  time.on = !time.on
 }
 </script>
 
@@ -67,17 +87,21 @@ const openLink = () => {
     <div v-for="(section, sectionName) in links" class="tabs">
       <span>{{ sectionName }}</span>
       <div class="link" v-for="(time, index) in section">
-        <RouterLink :class="time.on ? 'on' : null" :to="time.path">
+        <RouterLink
+          :to="time.path === '' ? time.links[0].path : time.path"
+          @click="openLink(time, section)"
+        >
           <i class="icon" :class="time.icon"></i>
           <span>{{ time.name }}</span>
-          <i
-            v-if="time.links"
-            @click.stop.prevent="time.active = !time.active"
-            class="down icon icon-arrow-down"
-          ></i>
+          <i v-if="time.links" class="down icon icon-arrow-down"></i>
         </RouterLink>
         <div class="link" v-show="time.active">
-          <RouterLink v-for="(timeSub, index) in time.links" class="" :to="time.path">
+          <RouterLink
+            :class="timeSub.on ? 'on' : null"
+            v-for="(timeSub, index) in time.links"
+            :to="time.links[index].path"
+            @click.prevent="openLinSub(timeSub, time.links)"
+          >
             <i class="icon" :class="timeSub.icon"></i>
             <span>{{ timeSub.name }}</span>
           </RouterLink>

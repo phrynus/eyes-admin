@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '@/views/home/Home.vue'
-import LoginView from '@/views/login/Login.vue'
-import RegisterView from '@/views/Register.vue'
+import IndexView from '@/views/home/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,29 +10,26 @@ const router = createRouter({
       component: IndexView,
       children: [
         {
-          path: '/key',
-          name: 'key',
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () => import('@/views/Key.vue')
+          path: '/65f9088d52859f6e463ffcb5',
+          name: 'keyId',
+          component: () => import('@/views/key/index.vue')
         },
         {
-          path: '/policy',
-          name: 'policy',
-          component: () => import('@/views/Policy.vue')
+          path: '/65f8fd0d47440a640ed94841',
+          name: 'policyId',
+          component: () => import('@/views/policy/index.vue')
         }
       ]
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: () => import('@/views/Login.vue')
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterView
+      component: () => import('@/views/Register.vue')
     }
 
     // {
