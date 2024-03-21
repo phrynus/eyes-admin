@@ -25,7 +25,7 @@ console.log('store', store)
       </div>
       <div class="user">
         <div class="image">
-          <img src="https://o-web.s3.bitiful.net/eyes/ETH.svg" alt="" />
+          <img src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" alt="" />
         </div>
         <div class="setting">
           <i class="icon icon-setting"></i>
