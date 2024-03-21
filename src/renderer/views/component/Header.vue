@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 // 取pinia的
-import { useConfigStore } from '@/stores/config'
+import { useConfigStore } from '../../stores/config'
 
 const store = useConfigStore()
 console.log('store', store)
@@ -25,7 +25,7 @@ console.log('store', store)
       </div>
       <div class="user">
         <div class="image">
-          <img src="@/assets/coin/ETH.svg" alt="" />
+          <img src="https://o-web.s3.bitiful.net/eyes/ETH.svg" alt="" />
         </div>
         <div class="setting">
           <i class="icon icon-setting"></i>
@@ -113,7 +113,6 @@ console.log('store', store)
     .user {
       cursor: pointer;
 
-      //width: 2em;
       height: 3em;
       background-color: #e3f2fd;
       display: flex;
@@ -139,7 +138,7 @@ console.log('store', store)
       .setting {
         width: 2em;
         height: 2em;
-        //background: rgb(237, 231, 246);
+
         border-radius: 8px;
         cursor: pointer;
         margin-left: 1em;

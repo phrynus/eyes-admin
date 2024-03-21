@@ -1,35 +1,34 @@
-# e
+# eyes-admin
 
-This template should help get you started developing with Vue 3 in Vite.
+An Electron application with Vue
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
 ## Project Setup
 
-```sh
-pnpm install
+### Install
+
+```bash
+$ pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
-```sh
-pnpm dev
+```bash
+$ pnpm dev
 ```
 
-### Compile and Minify for Production
+### Build
 
-```sh
-pnpm build
-```
+```bash
+# For windows
+$ pnpm build:win
 
-### Lint with [ESLint](https://eslint.org/)
+# For macOS
+$ pnpm build:mac
 
-```sh
-pnpm lint
+# For Linux
+$ pnpm build:linux
 ```

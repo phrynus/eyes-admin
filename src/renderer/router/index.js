@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '@/views/index.vue'
-import HomeView from '@/views/home/index.vue'
+import IndexView from '../views/index.vue'
+import HomeView from '../views/home/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,13 +20,13 @@ const router = createRouter({
         {
           path: '/keyId/:id',
           name: 'keyId',
-          component: () => import('@/views/key/index.vue'),
+          component: () => import('../views/key/index.vue'),
           meta: { requiresAuth: true }
         },
         {
           path: '/policyId/:id',
           name: 'policyId',
-          component: () => import('@/views/policy/index.vue'),
+          component: () => import('../views/policy/index.vue'),
           meta: { requiresAuth: true }
         }
       ]
@@ -34,12 +34,12 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/login.vue')
+      component: () => import('../views/login.vue')
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('@/views/register.vue')
+      component: () => import('../views/register.vue')
     }
   ]
 })
