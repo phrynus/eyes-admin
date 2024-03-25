@@ -92,13 +92,20 @@ const red = () => {
       // window.location.reload()
     })
     .catch((err) => {
-      console.log(err)
-      loadingInstance.close()
       ElNotification({
         title: '注册失败',
-        message: err.response.datac,
+        message: err.response.data,
         type: 'error'
       })
+      console.log(err)
+      loadingInstance.close()
+      inputUser.value = ''
+      inputTotp.value = 'folded'
+      iconUser.value = ''
+      totpText = ref('')
+      myUser.value.value = ''
+      myUser.value.focus()
+      title.value = 'EYES - USER'
       isRed = false
     })
 }
