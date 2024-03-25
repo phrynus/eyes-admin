@@ -24,9 +24,7 @@ console.log('store', store)
         <i class="icon icon-language"></i>
       </div>
       <div class="user">
-        <div class="image">
-          <img alt="" src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" />
-        </div>
+        <el-avatar :fit="'cover'" :size="28" src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" />
         <div class="setting">
           <i class="icon icon-setting"></i>
         </div>
