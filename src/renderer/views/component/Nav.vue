@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const links = ref({
   Dashboard: [
     {
-      icon: 'icon-code',
+      icon: 'icon-home',
       name: 'Home',
       on: true,
       active: false,
@@ -21,13 +21,13 @@ const links = ref({
       links: [
         {
           icon: 'icon-code',
-          name: '123',
+          name: '65f9088d52859f6e463ffcb5',
           on: false,
           path: '/keyId/65f9088d52859f6e463ffcb5'
         },
         {
           icon: 'icon-code',
-          name: '123',
+          name: '65f9088d52859f6e463ffcb51',
           on: false,
           path: '/keyId/65f9088d52859f6e463ffcb51'
         }
@@ -90,24 +90,24 @@ const openLinSub = (time, list) => {
   <nav>
     <div v-for="(section, sectionName) in links" class="tabs">
       <span>{{ sectionName }}</span>
-      <div class="link" v-for="(time, index) in section">
+      <div v-for="(time, index) in section" class="link">
         <RouterLink
           :class="time.on ? 'on' : null"
           :to="time.path === '' ? time.links[0].path : time.path"
           @click="openLink(time, section)"
         >
-          <i class="icon" :class="time.icon"></i>
+          <i :class="time.icon" class="icon"></i>
           <span>{{ time.name }}</span>
           <i v-if="time.links" class="down icon icon-arrow-down"></i>
         </RouterLink>
-        <div class="link" v-show="time.active">
+        <div v-show="time.active" class="link">
           <RouterLink
-            :class="timeSub.on ? 'on' : null"
             v-for="(timeSub, index) in time.links"
+            :class="timeSub.on ? 'on' : null"
             :to="time.links[index].path"
             @click.prevent="openLinSub(timeSub, time.links)"
           >
-            <i class="icon" :class="timeSub.icon"></i>
+            <i :class="timeSub.icon" class="icon"></i>
             <span>{{ timeSub.name }}</span>
           </RouterLink>
         </div>
@@ -119,7 +119,7 @@ const openLinSub = (time, list) => {
 <style lang="scss" scoped>
 nav {
   background: #fff;
-  width: 200px;
+  width: 240px;
   padding-left: 16px;
   padding-right: 16px;
 
@@ -188,6 +188,9 @@ nav {
           margin-bottom: 4px;
           font-size: 0.875rem;
           font-weight: 400;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }

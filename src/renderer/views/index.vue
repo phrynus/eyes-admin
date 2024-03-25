@@ -33,12 +33,13 @@ loadingInstance.close()
   display: flex;
 
   .nav {
-    width: 200px;
+    width: 240px;
     background: #fff;
   }
 
   .content {
     flex: 1;
+    padding: 12px;
   }
 }
 </style>

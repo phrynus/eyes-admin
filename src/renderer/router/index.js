@@ -29,6 +29,12 @@ const router = createRouter({
           name: 'policyId',
           component: () => import('../views/policy/index.vue'),
           meta: { requiresAuth: true }
+        },
+        {
+          path: '/setting',
+          name: 'setting',
+          component: () => import('../views/setting/index.vue'),
+          meta: { requiresAuth: true }
         }
       ]
     },

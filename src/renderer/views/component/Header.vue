@@ -25,7 +25,7 @@ console.log('store', store)
       </div>
       <div class="user">
         <div class="image">
-          <img src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" alt="" />
+          <img alt="" src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" />
         </div>
         <div class="setting">
           <i class="icon icon-setting"></i>
@@ -46,7 +46,7 @@ console.log('store', store)
   justify-content: space-between;
 
   .logo {
-    width: 200px;
+    width: 240px;
     padding: 18px;
     display: flex;
     align-items: center;
