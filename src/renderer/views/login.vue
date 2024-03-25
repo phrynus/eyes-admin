@@ -138,6 +138,12 @@ const userOnKeyup = (e) => {
     iconUser.value = ''
   }
 }
+const userOnclick = () => {
+  inputUser.value = 'folded'
+  inputTotp.value = ''
+  myTotp.value.focus()
+  title.value = 'EYES - TOTP'
+}
 
 onMounted(() => {
   myUser.value.focus()
@@ -164,7 +170,9 @@ onMounted(() => {
           />
           <div class="animated-button">
             <span :class="iconUser" class="icon-paper-plane"><i class="icon icon-user"></i></span>
-            <span class="next-button email"><i class="icon icon-navigation"></i></span>
+            <span class="next-button email" @click="userOnclick">
+              <i class="icon icon-navigation"></i>
+            </span>
           </div>
         </div>
         <div :class="inputTotp" class="input-section password-section">
@@ -374,6 +382,7 @@ $input-height: 75px;
       font-weight: 100;
       width: 100%;
       border: 0;
+      cursor: pointer;
     }
   }
 
