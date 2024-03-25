@@ -35,17 +35,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/login.vue')
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import('../views/register.vue')
     }
   ]
 })
 router.beforeEach((to, from, next) => {
   console.log(to.name)
-  const isLoggedIn = true
+  const isLoggedIn = false
   if (to.meta.requiresAuth && !isLoggedIn) {
     next({ name: 'login' })
   } else if ((to.name === 'login' || to.name === 'register' || to.name === 'index') && isLoggedIn) {

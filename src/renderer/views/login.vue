@@ -1,72 +1,332 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useConfigStore } from '../stores/config'
+import axios from 'axios'
 
 const store = useConfigStore()
-console.log('store', store)
+const myUser = ref('myUser')
+const myTotp = ref('myTotp')
+
+let iconUser = ref('')
+let iconTotp = ref('')
+let inputUser = ref('')
+let inputTotp = ref('folded')
+let title = ref('EYES - USER')
+let totpText = ref('')
+
+const login = () => {
+  axios
+    .post('http://127.0.0.1:3000/user/login', {
+      user: myUser.value.value,
+      totp: myTotp.value.value
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+const totpOnKeyup = (e) => {
+  if (totpText.value.length === 6) {
+    login()
+  } else {
+    iconTotp.value = ''
+  }
+
+  if (e.key === 'Escape') {
+    inputUser.value = ''
+    inputTotp.value = 'folded'
+    iconUser.value = ''
+    iconTotp.value = ''
+    myUser.value.value = ''
+    myTotp.value.value = ''
+    myUser.value.focus()
+    title.value = 'EYES - USER'
+  }
+}
+const userOnKeyup = (e) => {
+  if (myUser.value.value.length >= 3) {
+    iconUser.value = 'next'
+    if (e.key === 'Enter') {
+      inputUser.value = 'folded'
+      inputTotp.value = ''
+      myTotp.value.focus()
+      title.value = 'EYES - TOTP'
+    }
+  } else {
+    iconUser.value = ''
+  }
+}
+
+onMounted(() => {
+  myUser.value.focus()
+})
 </script>
 
 <template>
   <div class="login">
-    <div class="left">
-      <div class="box">
-        <div class="inputBox">
-          <span>USER:</span>
-          <input type="text" />
+    <div class="back"></div>
+    <div class="registration-form">
+      <header>
+        <h1>{{ title }}</h1>
+        <p>TOTP输入000000注册账户</p>
+      </header>
+      <form>
+        <div :class="inputUser" class="input-section email-section">
+          <input
+            ref="myUser"
+            autocomplete="off"
+            class="email"
+            placeholder="ENTER YOUR USER HERE"
+            type="text"
+            @keyup="userOnKeyup"
+          />
+          <div class="animated-button">
+            <span :class="iconUser" class="icon-paper-plane"><i class="icon icon-user"></i></span>
+            <span class="next-button email"><i class="icon icon-navigation"></i></span>
+          </div>
         </div>
-      </div>
+        <div :class="inputTotp" class="input-section password-section">
+          <input
+            ref="myTotp"
+            v-model="totpText"
+            class="password"
+            lang="4"
+            maxlength="6"
+            type="password"
+            @keyup="totpOnKeyup"
+          />
+          <div class="totpSub">
+            <span>{{ totpText?.length >= 1 ? '·' : null }}</span>
+            <span>{{ totpText?.length >= 2 ? '·' : null }}</span>
+            <span>{{ totpText?.length >= 3 ? '·' : null }}</span>
+            <span>{{ totpText?.length >= 4 ? '·' : null }}</span>
+            <span>{{ totpText?.length >= 5 ? '·' : null }}</span>
+            <span>{{ totpText?.length >= 6 ? '·' : null }}</span>
+          </div>
+          <!--<div class="animated-button">-->
+          <!--  <span :class="iconTotp" class="icon-lock"><i class="icon icon-keyboard-9"></i></span>-->
+          <!--  <span class="next-button password"><i class="icon icon-navigation"></i></span>-->
+          <!--</div>-->
+        </div>
+      </form>
     </div>
-    <div class="right"></div>
   </div>
   <!--Login-->
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+$input-height: 75px;
+//.icon {
+//  color: #fff;
+//}
+
 .login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  //background-color: #f4f4f4;
+  .back {
+    background: linear-gradient(120grad, rgb(100, 57, 134), rgb(152, 174, 213));
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 
-  .left {
-    flex: 1;
+  .registration-form {
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 40px);
+    transform: translate(-50%, -50%);
+    background: transparent;
 
-    .box {
+    header {
+      position: relative;
+      z-index: 4;
+      background: white;
+      padding: 20px 40px;
+      border-radius: 15px 15px 0 0;
+
+      h1 {
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        color: #333;
+        font-size: 23px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      p {
+        word-spacing: 0px;
+        color: rgb(159, 172, 182);
+        font-size: 15px;
+        margin: 5px 0 0;
+      }
+    }
+
+    form {
+      position: relative;
+    }
+
+    .input-section {
       width: 100%;
+      position: absolute;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      left: 50%;
+      transform: translate(-50%, 0);
+      height: $input-height;
+      border-radius: 0 0 15px 15px;
+      overflow: hidden;
+      z-index: 2;
+      box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.2);
+      transition: all 0.1s ease-in;
 
-      .inputBox {
+      .totpSub {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(225, 188, 239);
         display: flex;
-        //flex-direction: column;
-        //margin-bottom: 1em;
-        width: 200px;
-        background-color: #fff;
-        padding: 0.5em;
-        border-radius: 8px;
+        align-items: center;
+        justify-content: space-evenly;
 
         span {
-          font-size: 14px;
-          color: #999;
-          //font-weight: 900;
-          //margin-bottom: 0.5em;
+          display: block;
+          width: 12%;
+          height: 60px;
+          background-color: #fff;
+          border-radius: 4px;
+          color: rgb(225, 188, 239);
+          line-height: 60px;
+          text-align: center;
+          font-weight: 600;
+          font-size: 37px;
+          transition: 0;
         }
+      }
+
+      &.folded {
+        width: 95%;
+        margin-top: 10px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 1;
+
+        //input {
+        //  background-color: rgb(233, 226, 192);
+        //}
+
+        //span {
+        //  background-color: rgb(233, 226, 192);
+        //}
+      }
+
+      &.folded + .folded {
+        width: 90%;
+        margin-top: 20px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        z-index: 0;
 
         input {
-          padding: 0.5em;
-          border: 0;
-          border-bottom: 1px solid #409eff;
-          border-radius: 0;
-          outline: none;
+          background-color: rgb(225, 188, 239);
         }
+
+        span {
+          background-color: rgb(225, 188, 239);
+        }
+      }
+    }
+
+    form input {
+      background: lighten(rgb(243, 243, 251), 5%);
+      color: rgb(143, 143, 214);
+      width: 80%;
+      border: 0;
+      padding: 20px 40px;
+      margin: 0;
+
+      &.password {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        background-color: #fff0;
+        padding: 0 7.5%;
+        //font-size: 54px;
+        //letter-spacing: 45px;
+        opacity: 0;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        color: rgb(143, 143, 214);
+        font-weight: 100;
       }
     }
   }
 
-  .right {
-    width: 50%;
-    display: none;
+  .animated-button {
+    width: 20%;
+    background-color: rgb(212, 212, 255);
+
+    span {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      line-height: $input-height;
+      text-align: center;
+      height: $input-height;
+      transition: all 0.2s ease-in;
+
+      i {
+        font-size: 25px;
+        //color: rgb(153, 153, 248);
+        color: #fff;
+      }
+    }
+
+    .next-button {
+      background: transparent;
+      color: rgb(153, 153, 248);
+      font-weight: 100;
+      width: 100%;
+      border: 0;
+    }
+  }
+
+  .next {
+    margin-top: -$input-height;
+  }
+
+  .success {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: $input-height;
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in;
+    background: limegreen;
+    margin-top: -$input-height;
+
+    p {
+      color: white;
+      font-weight: 900;
+      letter-spacing: 2px;
+      font-size: 18px;
+      width: 100%;
+      text-align: center;
+    }
   }
 }
 

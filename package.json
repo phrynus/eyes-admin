@@ -20,9 +20,11 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
+    "axios": "^1.6.8",
     "electron-updater": "^6.1.7",
     "pinia": "^2.1.7",
     "sass": "^1.72.0",
+    "vite-plugin-vue-devtools": "^7.0.20",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
