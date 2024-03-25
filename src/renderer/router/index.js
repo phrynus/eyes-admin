@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import IndexView from '../views/index.vue'
 import HomeView from '../views/home/index.vue'
+import store2 from 'store2'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +41,7 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
   console.log(to.name)
-  const isLoggedIn = false
+  const isLoggedIn = store2.get('accessToken') || false
   if (to.meta.requiresAuth && !isLoggedIn) {
     next({ name: 'login' })
   } else if ((to.name === 'login' || to.name === 'register' || to.name === 'index') && isLoggedIn) {

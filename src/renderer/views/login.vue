@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useConfigStore } from '../stores/config'
+import { ElMessageBox, ElNotification, ElLoading } from 'element-plus'
+import store2 from 'store2'
 import axios from 'axios'
 
 const store = useConfigStore()
@@ -14,34 +16,111 @@ let inputTotp = ref('folded')
 let title = ref('EYES - USER')
 let totpText = ref('')
 
+let isLogin = false
+let isRed = false
+
 const login = () => {
+  isLogin = true
+  const loadingInstance = ElLoading.service({ fullscreen: true })
   axios
-    .post('http://127.0.0.1:3000/user/login', {
-      user: myUser.value.value,
+    .post('https://bot.phrynus.cn/user/login', {
+      name: myUser.value.value,
       totp: myTotp.value.value
     })
     .then((res) => {
       console.log(res)
+      //   保存到本地存储空间
+      store2.set('accessToken', res.data.accessToken)
+      store2.set('key', res.data.key)
+      store2.set('name', res.data.name)
+      store2.set('ploy', res.data.ploy)
+      ElNotification({
+        title: '登录成功',
+        message: '欢迎回来' + res.data.name,
+        type: 'success'
+      })
+      loadingInstance.close()
+      // 刷新页面
+      window.location.reload()
+    })
+    .catch((err) => {
+      ElNotification({
+        title: '登录失败',
+        message: err.response.data,
+        type: 'error'
+      })
+      console.log(err)
+      loadingInstance.close()
+      inputUser.value = ''
+      inputTotp.value = 'folded'
+      iconUser.value = ''
+      totpText = ref('')
+      myUser.value.value = ''
+      myUser.value.focus()
+      title.value = 'EYES - USER'
+      isLogin = false
+    })
+}
+const red = () => {
+  isRed = true
+  const loadingInstance = ElLoading.service({ fullscreen: true })
+
+  axios
+    .post('https://bot.phrynus.cn/user/reg', {
+      name: myUser.value.value
+    })
+    .then((res) => {
+      // console.log(res.data.totp)
+      //   保存到本地存储空间
+      store2.set('accessToken', res.data.accessToken)
+      store2.set('name', res.data.name)
+      loadingInstance.close()
+      ElNotification({
+        title: '注册成功',
+        message: '请保存好您的TOTP二维码',
+        type: 'success'
+      })
+      ElMessageBox.alert(`<img src="${res.data.totp}" alt="">`, `请保存好您的TOTP二维码`, {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: 'OK',
+        callback: () => {
+          window.location.reload()
+        }
+      })
+
+      // 刷新页面
+      // window.location.reload()
     })
     .catch((err) => {
       console.log(err)
+      loadingInstance.close()
+      ElNotification({
+        title: '注册失败',
+        message: err.response.datac,
+        type: 'error'
+      })
+      isRed = false
     })
 }
 
 const totpOnKeyup = (e) => {
-  if (totpText.value.length === 6) {
-    login()
-  } else {
-    iconTotp.value = ''
+  if (isLogin || isRed) {
+    return
   }
-
+  if (totpText?.value?.length === 6) {
+    if (totpText?.value === '000000') {
+      red()
+      return
+    }
+    login()
+    return
+  }
   if (e.key === 'Escape') {
     inputUser.value = ''
     inputTotp.value = 'folded'
     iconUser.value = ''
-    iconTotp.value = ''
+    totpText = ref('')
     myUser.value.value = ''
-    myTotp.value.value = ''
     myUser.value.focus()
     title.value = 'EYES - USER'
   }
@@ -93,18 +172,17 @@ onMounted(() => {
             ref="myTotp"
             v-model="totpText"
             class="password"
-            lang="4"
             maxlength="6"
             type="password"
             @keyup="totpOnKeyup"
           />
           <div class="totpSub">
-            <span>{{ totpText?.length >= 1 ? '·' : null }}</span>
-            <span>{{ totpText?.length >= 2 ? '·' : null }}</span>
-            <span>{{ totpText?.length >= 3 ? '·' : null }}</span>
-            <span>{{ totpText?.length >= 4 ? '·' : null }}</span>
-            <span>{{ totpText?.length >= 5 ? '·' : null }}</span>
-            <span>{{ totpText?.length >= 6 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 1 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 2 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 3 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 4 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 5 ? '·' : null }}</span>
+            <span>{{ totpText.length >= 6 ? '·' : null }}</span>
           </div>
           <!--<div class="animated-button">-->
           <!--  <span :class="iconTotp" class="icon-lock"><i class="icon icon-keyboard-9"></i></span>-->
@@ -202,7 +280,7 @@ $input-height: 75px;
           text-align: center;
           font-weight: 600;
           font-size: 37px;
-          transition: 0;
+          //transition: 0;
         }
       }
 

@@ -6,8 +6,8 @@ export const useConfigStore = defineStore({
   id: 'config',
   state: () => ({
     // 网站标题
-    title: 'EYES-PROXY',
-}),
+    title: 'EYES-PROXY'
+  }),
   getters: {
     getTitle() {
       return this.title
