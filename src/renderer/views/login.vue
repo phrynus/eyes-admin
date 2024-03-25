@@ -34,12 +34,12 @@ const login = () => {
       store2.set('key', res.data.key)
       store2.set('name', res.data.name)
       store2.set('ploy', res.data.ploy)
-      ElNotification({
-        title: '登录成功',
-        message: '欢迎回来' + res.data.name,
-        type: 'success'
-      })
-      loadingInstance.close()
+      // ElNotification({
+      //   title: '登录成功',
+      //   message: '欢迎回来' + res.data.name,
+      //   type: 'success'
+      // })
+      // loadingInstance.close()
       // 刷新页面
       window.location.reload()
     })
