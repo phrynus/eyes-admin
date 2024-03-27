@@ -1,10 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import IndexView from '../views/index.vue'
 import HomeView from '../views/home/index.vue'
 import store2 from 'store2'
 
+// 默认打开页面是home
+
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -52,9 +55,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'login' })
   } else if ((to.name === 'login' || to.name === 'register' || to.name === 'index') && isLoggedIn) {
     next({ name: 'home' })
-  } else {
-    // 其他情况下正常跳转
-    next()
   }
+  next()
 })
 export default router

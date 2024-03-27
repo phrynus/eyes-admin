@@ -13,7 +13,13 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      // 启用history模式
+      // history: true,
+      // 禁用同源策略，允许跨域请求
+      webSecurity: false
+      // 禁止build环境使用DevTool
+      // devTools: is.dev ? true : false
     }
   })
 
