@@ -1,65 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useConfigStore } from '../../stores/config'
+import store2 from 'store2'
+import { ElMessage, ElMessageBox, ElLoading, ElNotification } from 'element-plus'
+import axios from '../../components/CommonAxios'
 
-const links = ref({
-  Dashboard: [
-    {
-      icon: 'icon-home',
-      name: 'Home',
-      on: true,
-      active: false,
-      path: '/home'
-    }
-  ],
-  Config: [
-    {
-      icon: 'icon-code',
-      name: 'Key',
-      path: '',
-      on: false,
-      active: false,
-      links: [
-        {
-          icon: 'icon-code',
-          name: '65f9088d52859f6e463ffcb5',
-          on: false,
-          path: '/keyId/65f9088d52859f6e463ffcb5'
-        },
-        {
-          icon: 'icon-code',
-          name: '65f9088d52859f6e463ffcb51',
-          on: false,
-          path: '/keyId/65f9088d52859f6e463ffcb51'
-        }
-      ]
-    },
-    {
-      icon: 'icon-code',
-      name: 'Policy',
-      path: '',
-      on: false,
-      active: false,
-      links: [
-        {
-          icon: 'icon-code',
-          name: 'Policy',
-          on: false,
-          path: '/policyId/65f8fd0d47440a640ed94841'
-        }
-      ]
-    }
-  ],
-  // 设置
-  Setting: [
-    {
-      icon: 'icon-setting',
-      name: 'Setting',
-      path: '/setting',
-      on: false,
-      active: false
-    }
-  ]
-})
+const store = useConfigStore()
+const links = ref(store.getNavLinks)
 const openLink = (time, section) => {
   // 遍历links对象把对象里面的数组，将active和on都设置为false
   Object.keys(links.value).forEach((sectionName) => {
@@ -76,7 +23,9 @@ const openLink = (time, section) => {
   })
   time.active = true
   time.on = true
-  time.links[0].on = true
+  if (time.links?.length > 0) {
+    time.links[0].on = true
+  }
 }
 const openLinSub = (time, list) => {
   list.forEach((item) => {
@@ -84,36 +33,94 @@ const openLinSub = (time, list) => {
   })
   time.on = !time.on
 }
+// 更新links
+
+const keyDrawer = ref(false)
+const keyAdd = () => {
+  keyDrawer.value = true
+}
+const policyAdd = () => {
+  ElMessageBox.prompt('Please enter the policy name', 'Add Policy', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    inputPattern: /^[\u4e00-\u9fa5\w\d]{3,16}$/,
+    inputErrorMessage: '名称必须由3到16个字符组成，只能包含字母、数字、下划线、中文'
+  }).then(async ({ value }) => {
+    const loadingInstance = ElLoading.service({ fullscreen: true })
+    await axios
+      .post('/api/ploy/add', { name: value })
+      .then((res) => {
+        ElMessage({
+          type: 'success',
+          message: '添加成功, Name：' + res.data.name
+        })
+        let policys = store.getPolicy
+        console.log(policys)
+        policys.push(res.data)
+        store.setPolicy(policys)
+        links.value = store.getNavLinks
+      })
+      .catch((err) => {
+        console.log(err)
+
+        ElMessage({
+          type: 'error',
+          message: '添加失败' + err.response.data
+        })
+      })
+    loadingInstance.close()
+  })
+}
 </script>
 
 <template>
-  <nav>
-    <div v-for="(section, sectionName) in links" class="tabs">
-      <span>{{ sectionName }}</span>
-      <div v-for="(time, index) in section" class="link">
-        <RouterLink
-          :class="time.on ? 'on' : null"
-          :to="time.path === '' ? time.links[0].path : time.path"
-          @click="openLink(time, section)"
-        >
-          <i :class="time.icon" class="icon"></i>
-          <span>{{ time.name }}</span>
-          <i v-if="time.links" class="down icon icon-arrow-down"></i>
-        </RouterLink>
-        <div v-show="time.active" class="link">
+  <el-scrollbar>
+    <nav>
+      <div v-for="(section, sectionName) in links" class="tabs">
+        <span>{{ sectionName }}</span>
+        <div v-for="(time, index) in section" class="link">
           <RouterLink
-            v-for="(timeSub, index) in time.links"
-            :class="timeSub.on ? 'on' : null"
-            :to="time.links[index].path"
-            @click.prevent="openLinSub(timeSub, time.links)"
+            :class="time.on ? 'on' : null"
+            :to="time.path === '/keyAdd' || time.path === '/policyAdd' ? '' : time.path"
+            @click="
+              time.path === '/keyAdd'
+                ? keyAdd()
+                : time.path === '/policyAdd'
+                  ? policyAdd()
+                  : openLink(time, section)
+            "
           >
-            <i :class="timeSub.icon" class="icon"></i>
-            <span>{{ timeSub.name }}</span>
+            <i :class="time.icon" class="icon"></i>
+            <span>{{ time.name }}</span>
+            <i v-if="time.links" class="down icon icon-arrow-down"></i>
           </RouterLink>
+          <div v-show="time.active" class="link">
+            <RouterLink
+              v-for="(timeSub, index) in time.links"
+              :class="timeSub.on ? 'on' : null"
+              :to="
+                time.links[index].path === '/keyAdd' || time.links[index].path === '/policyAdd'
+                  ? ''
+                  : time.links[index].path
+              "
+              @click.prevent="
+                time.links[index].path === '/keyAdd'
+                  ? keyAdd()
+                  : time.links[index].path === '/policyAdd'
+                    ? policyAdd()
+                    : openLinSub(timeSub, time.links)
+              "
+            >
+              <i :class="timeSub.icon" class="icon"></i>
+              <span>{{ timeSub.name }}</span>
+            </RouterLink>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </el-scrollbar>
+
+  <el-drawer v-model="keyDrawer" direction="ltr"></el-drawer>
 </template>
 
 <style lang="scss" scoped>

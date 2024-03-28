@@ -28,9 +28,21 @@ const router = createRouter({
           meta: { requiresAuth: true }
         },
         {
+          path: '/keyAdd',
+          name: 'keyAdd',
+          component: () => import('../views/key/keyAdd.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
           path: '/policyId/:id',
           name: 'policyId',
           component: () => import('../views/policy/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/policyAdd',
+          name: 'policyIdAdd',
+          component: () => import('../views/policy/policyAdd.vue'),
           meta: { requiresAuth: true }
         },
         {
@@ -50,7 +62,7 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
   console.log(to.name)
-  const isLoggedIn = store2.get('accessToken') || false
+  const isLoggedIn = store2.get('token') || false
   if (to.meta.requiresAuth && !isLoggedIn) {
     next({ name: 'login' })
   } else if ((to.name === 'login' || to.name === 'register' || to.name === 'index') && isLoggedIn) {

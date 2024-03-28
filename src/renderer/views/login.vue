@@ -2,8 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useConfigStore } from '../stores/config'
 import { ElMessageBox, ElNotification, ElLoading } from 'element-plus'
-import store2 from 'store2'
-import axios from 'axios'
+import axios from '../components/CommonAxios'
 
 const store = useConfigStore()
 const myUser = ref('myUser')
@@ -23,33 +22,24 @@ const login = () => {
   isLogin = true
   const loadingInstance = ElLoading.service({ fullscreen: true })
   axios
-    .post('https://bot.phrynus.cn/user/login', {
+    .post('/user/login', {
       name: myUser.value.value,
       totp: myTotp.value.value
     })
     .then((res) => {
-      console.log(res)
-      //   保存到本地存储空间
-      store2.set('accessToken', res.data.accessToken)
-      store2.set('key', res.data.key)
-      store2.set('name', res.data.name)
-      store2.set('ploy', res.data.ploy)
-      // ElNotification({
-      //   title: '登录成功',
-      //   message: '欢迎回来' + res.data.name,
-      //   type: 'success'
-      // })
-      // loadingInstance.close()
-      // 刷新页面
+      store.setToken(res.data.accessToken)
+      store.setName(res.data.name)
+      store.setKey(res.data.key)
+      store.setPolicy(res.data.ploy)
       window.location.reload()
     })
     .catch((err) => {
+      console.log(err)
       ElNotification({
         title: '登录失败',
-        message: err.response.data,
+        message: JSON.stringify(err.response?.data || err.response),
         type: 'error'
       })
-      console.log(err)
       loadingInstance.close()
       inputUser.value = ''
       inputTotp.value = 'folded'
@@ -70,10 +60,8 @@ const red = () => {
       name: myUser.value.value
     })
     .then((res) => {
-      // console.log(res.data.totp)
-      //   保存到本地存储空间
-      store2.set('accessToken', res.data.accessToken)
-      store2.set('name', res.data.name)
+      store.setToken(res.data.accessToken)
+      store.setName(res.data.name)
       loadingInstance.close()
       ElNotification({
         title: '注册成功',
