@@ -36,8 +36,74 @@ const openLinSub = (time, list) => {
 // 更新links
 
 const keyDrawer = ref(false)
+const keyFormRef = ref('keyFormRef')
+const keyRuleForm = ref({
+  exchange: 'binance',
+  name: '',
+  key: '',
+  secret: '',
+  password: ''
+})
 const keyAdd = () => {
   keyDrawer.value = true
+}
+const keySubmit = async () => {
+  // 校验
+  if (!keyRuleForm.value.name) {
+    ElMessage({
+      type: 'error',
+      message: '请输入名称'
+    })
+    return
+  }
+  if (!keyRuleForm.value.key) {
+    ElMessage({
+      type: 'error',
+      message: '请输入key'
+    })
+    return
+  }
+  if (!keyRuleForm.value.secret) {
+    ElMessage({
+      type: 'error',
+      message: '请输入secret'
+    })
+    return
+  }
+  if (keyRuleForm.value.exchange === 'bitget' && !keyRuleForm.value.password) {
+    ElMessage({
+      type: 'error',
+      message: '请输入密码'
+    })
+    return
+  }
+  const loadingInstance = ElLoading.service({ fullscreen: true })
+  await axios
+    .post('/api/key/add', keyRuleForm.value)
+    .then((res) => {
+      ElMessage({
+        type: 'success',
+        message: '添加成功'
+      })
+      keyDrawer.value = false
+      keyRuleForm.value = {
+        exchange: 'binance',
+        name: '',
+        key: '',
+        secret: '',
+        password: ''
+      }
+      let keys = store.getKey
+      keys.push(res.data)
+      store.setKey(keys)
+    })
+    .catch((err) => {
+      ElMessage({
+        type: 'error',
+        message: err.response.data
+      })
+    })
+  loadingInstance.close()
 }
 const policyAdd = () => {
   ElMessageBox.prompt('Please enter the policy name', 'Add Policy', {
@@ -120,7 +186,35 @@ const policyAdd = () => {
     </nav>
   </el-scrollbar>
 
-  <el-drawer v-model="keyDrawer" direction="ltr"></el-drawer>
+  <el-drawer v-model="keyDrawer" direction="ltr">
+    <template #header>
+      <h3>Add your key</h3>
+    </template>
+    <el-form ref="keyFormRef" :model="keyRuleForm" label-position="left">
+      <!--选择交易所-->
+      <el-form-item label="Exchange">
+        <el-select v-model="keyRuleForm.exchange" placeholder="Binance1">
+          <el-option default label="Binance" value="binance" />
+          <el-option :disabled="true" label="Bitget" value="bitget" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Name">
+        <el-input v-model="keyRuleForm.name" placeholder="Please enter the key name" />
+      </el-form-item>
+      <el-form-item label="Key">
+        <el-input v-model="keyRuleForm.key" placeholder="Please enter the key" />
+      </el-form-item>
+      <el-form-item label="Secret">
+        <el-input v-model="keyRuleForm.secret" placeholder="Please enter the secret" />
+      </el-form-item>
+      <el-form-item v-if="keyRuleForm.exchange === 'bitget'" label="Password">
+        <el-input v-model="keyRuleForm.password" placeholder="Please enter the password" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="keySubmit">Submit</el-button>
+      </el-form-item>
+    </el-form>
+  </el-drawer>
 </template>
 
 <style lang="scss" scoped>

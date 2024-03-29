@@ -32,6 +32,32 @@ onMounted(async () => {
       store.setPolicy(null)
       window.location.reload()
     })
+  //   定时更新token
+  let tokenTimer = setInterval(
+    async () => {
+      const token = store.getToken
+      const tokenArr = token.split('.')
+      const payload = JSON.parse(atob(tokenArr[1]))
+      const diff = (payload.exp * 1000 - new Date().getTime()) / 1000 / 60
+      if (diff < 15) {
+        await axios
+          .post('/user/refresh')
+          .then((res) => {
+            store.setToken(res.data)
+          })
+          .catch((err) => {
+            store.setToken(null)
+            store.setName(null)
+            store.setKey(null)
+            store.setPolicy(null)
+            clearInterval(tokenTimer)
+            tokenTimer = null
+            window.location.reload()
+          })
+      }
+    },
+    1000 * 60 * 2
+  )
 })
 </script>
 
@@ -60,8 +86,11 @@ onMounted(async () => {
   }
 
   .content {
+    .el-scrollbar {
+      padding: 12px;
+    }
+
     flex: 1;
-    padding: 12px;
   }
 }
 </style>

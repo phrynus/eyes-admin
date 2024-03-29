@@ -4,31 +4,49 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useConfigStore } from '../../stores/config'
 
 const store = useConfigStore()
-console.log('store', store)
+
+// console.log('store', store)
+
+function Exit() {
+  store.setToken(null)
+  store.setName(null)
+  store.setKey(null)
+  store.setPolicy(null)
+  window.location.reload()
+}
 </script>
 
 <template>
   <div class="tooltip">
     <div class="logo">
       <div class="piece ico">{{ store.title }}</div>
-      <!--<div class="piece rounded">-->
-      <!--  <i class="icon icon-toggle-left"></i>-->
-      <!--</div>-->
     </div>
     <div class="container">
       <div class="piece night sun">
         <i class="icon icon-sun"></i>
         <i class="icon icon-moon"></i>
       </div>
-      <div class="piece language">
-        <i class="icon icon-language"></i>
-      </div>
-      <div class="user">
-        <el-avatar :fit="'cover'" :size="28" src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg" />
-        <div class="setting">
-          <i class="icon icon-setting"></i>
+      <!--<div class="piece language">-->
+      <!--  <i class="icon icon-language"></i>-->
+      <!--</div>-->
+      <el-dropdown>
+        <div class="user">
+          <el-avatar
+            :fit="'cover'"
+            :size="28"
+            src="https://o-web.s3.bitiful.net/eyes/ico/ETH.svg"
+          />
+          <div class="setting">
+            <i class="icon icon-setting"></i>
+          </div>
         </div>
-      </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>Reset TOTP</el-dropdown-item>
+            <el-dropdown-item @click="Exit">Exit</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -84,7 +102,6 @@ console.log('store', store)
       border-radius: 8px;
       cursor: pointer;
       margin-left: 18px;
-      cursor: pointer;
 
       &.night {
         &.sun {
@@ -110,14 +127,14 @@ console.log('store', store)
 
     .user {
       cursor: pointer;
-
+      align-items: center;
       height: 3em;
       background-color: #e3f2fd;
       display: flex;
       margin-left: 18px;
       border-radius: 1.5em;
-      align-items: center;
       padding: 0 0.5em;
+      outline: none;
 
       .image {
         width: 2em;

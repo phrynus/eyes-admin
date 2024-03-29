@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import store2 from 'store2'
+import axios from '../components/CommonAxios'
 
 // 设置基础配置项
 export const useConfigStore = defineStore({
@@ -59,7 +60,9 @@ export const useConfigStore = defineStore({
       return this.title
     },
     getToken() {
-      return this.token || store2.get('token') || []
+      const token = this.token || store2.get('token') || ''
+
+      return token
     },
     getName() {
       return this.name || store2.get('name') || []
@@ -120,7 +123,7 @@ export const useConfigStore = defineStore({
           this.nav.links.Config[0].path = '/keyAdd'
         }
       } else {
-        this.nav.links.value.Config[1].links = []
+        this.nav.links.Config[1].links = []
         store2.remove('key')
       }
     },

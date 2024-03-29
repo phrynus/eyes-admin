@@ -28,21 +28,9 @@ const router = createRouter({
           meta: { requiresAuth: true }
         },
         {
-          path: '/keyAdd',
-          name: 'keyAdd',
-          component: () => import('../views/key/keyAdd.vue'),
-          meta: { requiresAuth: true }
-        },
-        {
           path: '/policyId/:id',
           name: 'policyId',
           component: () => import('../views/policy/index.vue'),
-          meta: { requiresAuth: true }
-        },
-        {
-          path: '/policyAdd',
-          name: 'policyIdAdd',
-          component: () => import('../views/policy/policyAdd.vue'),
           meta: { requiresAuth: true }
         },
         {

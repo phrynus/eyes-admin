@@ -2,7 +2,8 @@ import axios from 'axios'
 import store2 from 'store2'
 
 const instance = axios.create({
-  baseURL: 'https://bot.phrynus.cn', // 设置默认的API base URL
+  // baseURL: 'https://bot.phrynus.cn', // 设置默认的API base URL
+  baseURL: 'http://127.0.0.1:3000', // 设置默认的API base URL
   timeout: 10000, // 设置请求超时时间
   headers: {
     'Content-Type': 'application/json'
@@ -20,7 +21,6 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token
     }
-
     return config
   },
   (error) => {
