@@ -87,7 +87,7 @@ onMounted(async () => {
 
   .content {
     .el-scrollbar {
-      padding: 12px;
+      //padding: 12px 6px 12px 12px;
     }
 
     flex: 1;
