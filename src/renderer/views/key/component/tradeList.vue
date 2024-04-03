@@ -17,7 +17,7 @@ const tableData = Object.keys(keyId.value.safe_tradeList).map((key) => {
 
       <el-button size="small" type="primary" @click="">Add symbol</el-button>
     </div>
-    <el-table id="el-table" :data="tableData" height="320" style="width: 100%">
+    <el-table :data="tableData" height="320" style="width: 100%">
       <el-table-column label="Symbol" prop="name"></el-table-column>
       <el-table-column label="Lever" prop="lever" width="70"></el-table-column>
       <el-table-column label="Side" prop="type" width="90"></el-table-column>
@@ -28,7 +28,6 @@ const tableData = Object.keys(keyId.value.safe_tradeList).map((key) => {
         </template>
       </el-table-column>
     </el-table>
-    <br />
   </div>
 </template>
 

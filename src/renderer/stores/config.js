@@ -41,17 +41,17 @@ export const useConfigStore = defineStore({
             active: false,
             links: []
           }
-        ],
-        // 设置
-        Setting: [
-          {
-            icon: 'icon-setting',
-            name: 'Setting',
-            path: '/setting',
-            on: false,
-            active: false
-          }
         ]
+        // // 设置
+        // Setting: [
+        //   {
+        //     icon: 'icon-setting',
+        //     name: 'Setting',
+        //     path: '/setting',
+        //     on: false,
+        //     active: false
+        //   }
+        // ]
       }
     }
   }),

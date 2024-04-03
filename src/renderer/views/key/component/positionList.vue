@@ -18,23 +18,32 @@ watch(account, (value) => {
       <el-button size="small" type="primary" @click="">Refresh</el-button>
     </div>
     <el-table :data="tableData" height="320" style="width: 100%">
-      <el-table-column label="交易对" prop="symbol" width="120"></el-table-column>
-      <el-table-column label="杠杆" prop="leverage" width="70"></el-table-column>
-      <el-table-column label="持仓方向" prop="positionSide"></el-table-column>
-      <el-table-column label="持仓数量" prop="positionAmt"></el-table-column>
-      <el-table-column label="保证金" prop="initialMargin"></el-table-column>
-      <el-table-column label="盈亏" prop="unrealizedProfit"></el-table-column>
+      <el-table-column label="交易对" prop="symbol"></el-table-column>
+      <el-table-column label="杠杆" prop="leverage" width="60"></el-table-column>
+      <el-table-column label="持仓方向" prop="positionSide" width="90"></el-table-column>
+      <el-table-column label="持仓数量" prop="positionAmt" width="90"></el-table-column>
+      <el-table-column label="保证金" prop="initialMargin" width="110"></el-table-column>
+      <el-table-column label="盈亏" prop="unrealizedProfit" width="110">
+        <template #default="scope">
+          <el-text :type="scope.row.unrealizedProfit > 0 ? 'success' : 'danger'" class="mx-1">
+            {{ scope.row.unrealizedProfit }}
+          </el-text>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="OPER" width="80">
         <template #default>
           <el-button link size="small" type="primary" @click="">CLOSE</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <br />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.mx-1 {
+  overflow-wrap: initial;
+}
+
 .box {
   padding: 16px;
   border-radius: 8px;

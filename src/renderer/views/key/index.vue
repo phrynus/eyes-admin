@@ -10,6 +10,8 @@ import Position from './component/position.vue'
 import User from './component/user.vue'
 import TradeList from './component/tradeList.vue'
 import PositionList from './component/positionList.vue'
+import Logger from './component/logger.vue'
+import Account from './component/account.vue'
 
 const store = useConfigStore()
 const router = useRouter()
@@ -75,7 +77,9 @@ watchEffect(() => {
       <el-col :span="3">
         <CopyTv />
       </el-col>
-      <el-col :span="8"></el-col>
+      <el-col :span="11">
+        <Account />
+      </el-col>
     </el-row>
     <el-row :gutter="12">
       <el-col :span="9">
@@ -83,6 +87,11 @@ watchEffect(() => {
       </el-col>
       <el-col :span="15">
         <PositionList />
+      </el-col>
+    </el-row>
+    <el-row :gutter="12">
+      <el-col :span="24">
+        <Logger />
       </el-col>
     </el-row>
   </div>
