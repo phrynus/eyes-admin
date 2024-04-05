@@ -105,6 +105,7 @@ export const useConfigStore = defineStore({
         if (key.length > 0) {
           this.nav.links.Config[0].path = '/keyId/' + key[0]._id
           this.nav.links.Config[0].links = []
+          // this.nav.links.Config[0].active = true
           key.map((item) => {
             this.nav.links.Config[0].links.push({
               icon: 'icon-code',
@@ -126,6 +127,15 @@ export const useConfigStore = defineStore({
         this.nav.links.Config[1].links = []
         store2.remove('key')
       }
+    },
+    setKeyActive(keyId) {
+      this.nav.links.Config[0].links.map((item) => {
+        if (item.path === '/keyId/' + keyId) {
+          item.on = true
+        } else {
+          item.on = false
+        }
+      })
     },
     setPolicy(policy) {
       this.policy = policy

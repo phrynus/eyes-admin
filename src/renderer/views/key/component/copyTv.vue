@@ -18,11 +18,14 @@ const tv = {
   price: '{{strategy.order.price}}',
   comment: '{{strategy.order.comment}}'
 }
-console.log(tv.markId)
+const tvJSON = JSON.stringify(tv)
+const tvUrl = 'https://bot.phrynus.cn/trade/tv'
+const dialogFormVisible = ref(false)
 
 function copy(e, t) {
+  // dialogFormVisible.value = false
   const clipboard = new Clipboard(e.target, {
-    text: () => JSON.stringify(t)
+    text: () => t
   })
   clipboard.on('success', () => {
     ElMessage({
@@ -33,7 +36,7 @@ function copy(e, t) {
   })
   clipboard.on('error', () => {
     ElMessage({
-      message: '复制失败',
+      message: '复制失败,请手动复制',
       type: 'error'
     })
     clipboard.destroy()
@@ -43,7 +46,7 @@ function copy(e, t) {
 </script>
 
 <template>
-  <div class="box" @click="copy($event, tv)">
+  <div class="box" @click="dialogFormVisible = true">
     <div class="top">
       <div class="title">
         <h3>TV</h3>
@@ -52,9 +55,32 @@ function copy(e, t) {
     </div>
     <p>Click to copy TV alarm</p>
   </div>
+  <!--  -->
+  <el-dialog v-model="dialogFormVisible" title="Shipping address" width="500">
+    <el-form>
+      <el-form-item label="WebHooks">
+        <el-input v-model="tvUrl" />
+      </el-form-item>
+      <el-form-item>
+        <el-button class="ml-a" type="primary" @click="copy($event, tvUrl)">Copy</el-button>
+      </el-form-item>
+      <el-form-item label="Message">
+        <el-input v-model="tvJSON" :rows="6" type="textarea" />
+      </el-form-item>
+      <el-form-item>
+        <div class="ml-a" @click="copy($event, tvJSON)">
+          <el-button type="primary">Copy</el-button>
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
+.ml-a {
+  margin-left: auto;
+}
+
 .box {
   padding: 16px;
   border-radius: 8px;

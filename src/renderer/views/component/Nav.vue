@@ -158,7 +158,7 @@ const policyAdd = () => {
           >
             <i :class="time.icon" class="icon"></i>
             <span>{{ time.name }}</span>
-            <i v-if="time.links" class="down icon icon-arrow-down"></i>
+            <i v-if="time.links?.length > 0" class="down icon icon-arrow-down"></i>
           </RouterLink>
           <div v-show="time.active" class="link">
             <RouterLink

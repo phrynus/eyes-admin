@@ -1,12 +1,17 @@
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, watch } from 'vue'
 // 取父级数据
 const keyId = inject('keyId')
-
+const tableData = ref([])
 // 取keyId.value.safe_tradeList里面的对象名称
-
-const tableData = Object.keys(keyId.value.safe_tradeList).map((key) => {
-  return { name: key, ...keyId.value.safe_tradeList[key] }
+const init = () => {
+  tableData.value = Object.keys(keyId.value.safe_tradeList).map((key) => {
+    return { name: key, ...keyId.value.safe_tradeList[key] }
+  })
+}
+init()
+watch(keyId, (value) => {
+  init()
 })
 </script>
 

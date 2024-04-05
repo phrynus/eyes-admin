@@ -22,6 +22,7 @@ function createWindow() {
       // devTools: is.dev ? true : false
     }
   })
+  mainWindow.setTitle('我的Electron应用')
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

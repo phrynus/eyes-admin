@@ -1,8 +1,8 @@
 @font-face {
   font-family: "icon"; /* Project id 4471811 */
-  src: url('https://at.alicdn.com/t/c/font_4471811_359hoyjxg9t.woff2?t=1711421627442') format('woff2'),
-  url('https://at.alicdn.com/t/c/font_4471811_359hoyjxg9t.woff?t=1711421627442') format('woff'),
-  url('https://at.alicdn.com/t/c/font_4471811_359hoyjxg9t.ttf?t=1711421627442') format('truetype');
+  src: url('https://at.alicdn.com/t/c/font_4471811_qoh484zhr4k.woff2?t=1712259767307') format('woff2'),
+  url('https://at.alicdn.com/t/c/font_4471811_qoh484zhr4k.woff?t=1712259767307') format('woff'),
+  url('https://at.alicdn.com/t/c/font_4471811_qoh484zhr4k.ttf?t=1712259767307') format('truetype');
 }
 
 .icon {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-left:before {
+  content: "\e685";
+}
+
+.icon-arrow-up:before {
+  content: "\e686";
+}
+
+.icon-arrow-down:before {
+  content: "\e687";
+}
+
+.icon-arrow-right:before {
+  content: "\e688";
 }
 
 .icon-btc:before {

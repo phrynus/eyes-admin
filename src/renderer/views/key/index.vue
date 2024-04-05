@@ -23,12 +23,10 @@ const keyId = ref({
 })
 const account = ref({})
 //
-provide('keyId', keyId)
-provide('account', account)
 
 // 去除USDT USD字符方法
 
-const init = async (id) => {
+const refreshAccount = async () => {
   const loadingInstance = ElLoading.service({ fullscreen: true })
   try {
     // 获取仓位
@@ -46,16 +44,30 @@ const init = async (id) => {
           message: '获取仓位失败',
           type: 'error'
         })
-        throw new Error('获取仓位失败')
+        return {}
       })
 
     loadingInstance.close()
   } catch (error) {
     console.log(error)
+    loadingInstance.close()
     // window.location.reload()
   }
 }
 
+const init = async (id) => {
+  const loadingInstance = ElLoading.service({ fullscreen: true })
+  try {
+    // 获取仓位
+    await refreshAccount()
+
+    loadingInstance.close()
+  } catch (error) {
+    console.log(error)
+    loadingInstance.close()
+    // window.location.reload()
+  }
+}
 // 监听route.params.id发生变化，每次变化都输出一次
 watchEffect(() => {
   if (keyId.value._id !== route.params.id) {
@@ -63,6 +75,10 @@ watchEffect(() => {
     init(route.params.id)
   }
 })
+
+provide('keyId', keyId)
+provide('account', account)
+provide('refreshAccount', refreshAccount)
 </script>
 
 <template>

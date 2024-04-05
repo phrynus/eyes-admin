@@ -2,12 +2,46 @@
 import { ref, inject } from 'vue'
 import Clipboard from 'clipboard'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import axios from '../../../components/CommonAxios'
+
 // 取父级数据
 const keyId = inject('keyId')
+const setNum = () => {
+  ElMessageBox.prompt('设置可持仓数量', 'Position', {
+    inputPattern: /^[\d]{1,3}$/,
+    inputErrorMessage: '请输入数字1-3位'
+  })
+    .then(async ({ value }) => {
+      await axios
+        .post('/api/key/update', {
+          keyId: keyId.value._id,
+          safe_num: value
+        })
+        .then((res) => {
+          keyId.value.safe_num = value
+          ElMessage({
+            type: 'success',
+            message: `设置成功`
+          })
+        })
+        .catch((err) => {
+          ElMessage({
+            type: 'info',
+            message: '设置失败'
+          })
+        })
+    })
+    .catch(() => {
+      // ElMessage({
+      //   type: 'info',
+      //   message: '已取消'
+      // })
+    })
+}
 </script>
 
 <template>
-  <div class="box">
+  <div class="box" @click="setNum">
     <div class="top">
       <div class="title">
         <h3>Position</h3>

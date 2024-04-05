@@ -1,7 +1,7 @@
 {
-  "name": "eyes-admin",
+  "name": "eyes-交易机器人",
   "version": "1.0.0",
-  "description": "An Electron application with Vue",
+  "description": "交易机器人",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
