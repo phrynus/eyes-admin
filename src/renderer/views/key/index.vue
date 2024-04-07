@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, provide } from 'vue'
+import { ref, watchEffect, provide, inject, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { useConfigStore } from '../../stores/config'
@@ -12,6 +12,9 @@ import TradeList from './component/tradeList.vue'
 import PositionList from './component/positionList.vue'
 import Logger from './component/logger.vue'
 import Account from './component/account.vue'
+
+const exchangeInfo = inject('exchangeInfo')
+provide('exchangeInfo', exchangeInfo)
 
 const store = useConfigStore()
 const router = useRouter()

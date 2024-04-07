@@ -1,15 +1,18 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, provide } from 'vue'
 import { RouterView } from 'vue-router'
 import Header from './component/Header.vue'
 import Nav from './component/Nav.vue'
 import store2 from 'store2'
 import { useConfigStore } from '../stores/config'
 import axios from '../components/CommonAxios'
-import { ElMessageBox, ElNotification, ElLoading } from 'element-plus'
+import { ElMessageBox, ElNotification, ElLoading, ElMessage } from 'element-plus'
 
 const store = useConfigStore()
 const loadingInstance = ElLoading.service({ fullscreen: true })
+
+const exchangeInfo = ref({})
+provide('exchangeInfo', exchangeInfo)
 
 onMounted(async () => {
   await axios
@@ -58,6 +61,23 @@ onMounted(async () => {
     },
     1000 * 60 * 2
   )
+
+  exchangeInfo.value = await axios
+    .post('/api/custom', { method: 'GET', url: '/fapi/v1/exchangeInfo' })
+    .then((res) => {
+      ElMessage({
+        message: '获取交易规则成功',
+        type: 'success'
+      })
+      return res.data
+    })
+    .catch((err) => {
+      ElMessage({
+        message: '获取交易规则失败',
+        type: 'error'
+      })
+      return {}
+    })
 })
 </script>
 

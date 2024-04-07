@@ -11,7 +11,36 @@ const tableData = ref([])
 const usdtSwitch = ref(true)
 // 写一个方法精简到小数点后两位
 const toFixed = (num) => {
-  return Number(num).toFixed(2)
+  return Number(num).toFixed(3)
+}
+
+const close = async (data) => {
+  const loadingInstance = ElLoading.service({ fullscreen: true })
+  await axios
+    .post('/api/close', {
+      keyId: keyId.value._id,
+      symbol: data.symbol,
+      type: 'MARKET',
+      positionSide: data.positionSide,
+      side: data.positionSide === 'LONG' ? 'SELL' : 'BUY',
+      quantity: data.positionAmt
+    })
+    .then((res) => {
+      loadingInstance.close()
+      ElMessage({
+        type: 'success',
+        message: `操作成功`
+      })
+      refreshAccount()
+    })
+    .catch((err) => {
+      loadingInstance.close()
+      ElMessage({
+        type: 'info',
+        message: '操作失败'
+      })
+    })
+  console.log(data)
 }
 
 //监听account变化
@@ -37,25 +66,34 @@ watch(account, (value) => {
     <el-table :data="tableData" height="320" style="width: 100%">
       <el-table-column label="交易对" prop="symbol"></el-table-column>
       <el-table-column label="杠杆" prop="leverage" width="60"></el-table-column>
-      <el-table-column label="持仓方向" prop="positionSide" width="90"></el-table-column>
-      <el-table-column label="持仓数量" prop="positionAmt" width="90">
+      <el-table-column label="方向" prop="positionSide" width="90"></el-table-column>
+      <el-table-column label="数量" prop="positionAmt" width="110">
         <template #default="scope">
           <el-text class="mx-1">
-            {{ usdtSwitch ? scope.row.positionAmt * scope.row.entryPrice : scope.row.positionAmt }}
+            {{
+              toFixed(
+                usdtSwitch ? scope.row.positionAmt * scope.row.entryPrice : scope.row.positionAmt
+              )
+            }}
           </el-text>
         </template>
       </el-table-column>
-      <el-table-column label="保证金" prop="initialMargin" width="110"></el-table-column>
+
       <el-table-column label="盈亏" prop="unrealizedProfit" width="110">
         <template #default="scope">
           <el-text :type="scope.row.unrealizedProfit > 0 ? 'success' : 'danger'" class="mx-1">
-            {{ scope.row.unrealizedProfit }}
+            {{ toFixed(scope.row.unrealizedProfit) }}
           </el-text>
         </template>
       </el-table-column>
+      <el-table-column label="保证金" prop="initialMargin" width="110">
+        <template #default="scope">
+          {{ toFixed(scope.row.initialMargin) }}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="OPER" width="80">
-        <template #default>
-          <el-button link size="small" type="primary" @click="">CLOSE</el-button>
+        <template #default="scope">
+          <el-button link size="small" type="primary" @click="close(scope.row)">CLOSE</el-button>
         </template>
       </el-table-column>
     </el-table>
