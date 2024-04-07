@@ -4,3 +4,7 @@
   min-height: 100vh;
   min-width: 100vw;
 }
+
+.el-table .cell {
+  padding: 0 6px;
+}

@@ -211,10 +211,10 @@ watch(exchangeInfo, (value) => {
     </div>
     <el-table :data="tableData" height="320" style="width: 100%">
       <el-table-column label="Symbol" prop="name"></el-table-column>
-      <el-table-column label="Lever" prop="lever" width="65"></el-table-column>
-      <el-table-column label="Split" prop="split" width="60"></el-table-column>
-      <el-table-column label="type" prop="type" width="90"></el-table-column>
-      <el-table-column fixed="right" label="OPER" width="105">
+      <el-table-column label="Lever" prop="lever" width="55"></el-table-column>
+      <el-table-column label="Split" prop="split" width="50"></el-table-column>
+      <el-table-column label="type" prop="type" width="80"></el-table-column>
+      <el-table-column fixed="right" label="OPER" width="95">
         <template #default="scope">
           <el-button link size="small" type="primary" @click="deleteTrade([scope.row.name])">
             Delete
