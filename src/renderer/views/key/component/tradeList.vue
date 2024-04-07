@@ -272,7 +272,7 @@ watch(exchangeInfo, (value) => {
       <el-form-item label="type">
         <el-radio-group v-model="addArrowForm.type">
           <el-radio value="MARKET">MARKET</el-radio>
-          <el-radio value="TICKER">TICKER</el-radio>
+          <el-radio :disabled="true" value="TICKER">TICKER</el-radio>
           <el-radio value="LIMIT">LIMIT</el-radio>
         </el-radio-group>
       </el-form-item>
