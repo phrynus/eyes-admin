@@ -15,7 +15,7 @@ const toFixed = (num) => {
         >{{ toFixed(account.totalWalletBalance) }}
       </el-descriptions-item>
       <el-descriptions-item label="盈亏">
-        <el-text :type="account.totalCrossUnPnl > 0 ? 'success' : 'danger'">
+        <el-text :type="account.totalCrossUnPnl >= 0 ? 'success' : 'danger'">
           {{ toFixed(account.totalUnrealizedProfit) }}
         </el-text>
       </el-descriptions-item>
