@@ -212,7 +212,7 @@ watch(exchangeInfo, (value) => {
     <el-table :data="tableData" height="320" style="width: 100%">
       <el-table-column label="交易对" prop="name"></el-table-column>
       <el-table-column label="杠杆" prop="lever" width="55"></el-table-column>
-      <el-table-column label="必持仓" prop="split" width="50"></el-table-column>
+      <el-table-column label="必持仓" prop="split" width="60"></el-table-column>
       <el-table-column label="规则" prop="type" width="80"></el-table-column>
       <el-table-column fixed="right" label="操作" width="95">
         <template #default="scope">
