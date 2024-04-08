@@ -210,16 +210,16 @@ watch(exchangeInfo, (value) => {
       <el-button size="small" type="primary" @click="addDialog = true">Add</el-button>
     </div>
     <el-table :data="tableData" height="320" style="width: 100%">
-      <el-table-column label="Symbol" prop="name"></el-table-column>
-      <el-table-column label="Lever" prop="lever" width="55"></el-table-column>
-      <el-table-column label="Split" prop="split" width="50"></el-table-column>
-      <el-table-column label="type" prop="type" width="80"></el-table-column>
-      <el-table-column fixed="right" label="OPER" width="95">
+      <el-table-column label="交易对" prop="name"></el-table-column>
+      <el-table-column label="杠杆" prop="lever" width="55"></el-table-column>
+      <el-table-column label="必持仓" prop="split" width="50"></el-table-column>
+      <el-table-column label="规则" prop="type" width="80"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="95">
         <template #default="scope">
           <el-button link size="small" type="primary" @click="deleteTrade([scope.row.name])">
-            Delete
+            <el-text type="success">删除</el-text>
           </el-button>
-          <el-button link size="small" type="primary" @click="edit(scope.row)">Edit</el-button>
+          <el-button link size="small" type="primary" @click="edit(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
