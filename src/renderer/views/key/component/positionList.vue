@@ -93,7 +93,9 @@ watch(account, (value) => {
       </el-table-column>
       <el-table-column fixed="right" label="OPER" width="60">
         <template #default="scope">
-          <el-button link size="small" type="primary" @click="close(scope.row)">CLOSE</el-button>
+          <el-button link size="small" type="primary" @click="close(scope.row)">
+            <el-text type="danger">平仓</el-text>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

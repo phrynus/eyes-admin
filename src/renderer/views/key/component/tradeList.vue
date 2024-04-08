@@ -217,7 +217,7 @@ watch(exchangeInfo, (value) => {
       <el-table-column fixed="right" label="操作" width="95">
         <template #default="scope">
           <el-button link size="small" type="primary" @click="deleteTrade([scope.row.name])">
-            <el-text type="success">删除</el-text>
+            <el-text type="danger">删除</el-text>
           </el-button>
           <el-button link size="small" type="primary" @click="edit(scope.row)">修改</el-button>
         </template>
